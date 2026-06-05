@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Ăn Thanh Lịch - Tím & Hồng</title>
+    <style>
+        /* Khởi tạo font chữ và màu sắc chủ đạo */
+        :root {
+            --purple-dark: #4A154B;
+            --purple-main: #6B2D5C;
+            --pink-main: #D96B94;
+            --pink-light: #FCEFF2;
+            --text-dark: #333333;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f1f4;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- THANH MENU (NAVBAR) --- */
+        header {
+            background-color: var(--purple-dark);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--pink-main);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--pink-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink-main);
+        }
+
+        /* --- BANNER CHÀO MỪNG --- */
+        .hero {
+            background: linear-gradient(135deg, var(--purple-main), var(--pink-main));
+            color: var(--white);
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        /* --- BỐ CỤC CHÍNH --- */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- DANH SÁCH MÓN ĂN --- */
+        .menu-section h2 {
+            color: var(--purple-dark);
+            border-bottom: 3px solid var(--pink-main);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .food-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .food-img {
+            width: 100%;
+            height: 160px;
+            background-color: var(--pink-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--purple-main);
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+        .food-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .food-title {
+            font-size: 18px;
+            color: var(--purple-dark);
+            margin-bottom: 8px;
+        }
+
+        .food-price {
+            color: var(--pink-main);
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-add {
+            background-color: var(--purple-main);
+            color: var(--white);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: auto;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: var(--pink-main);
+        }
+
+        /* --- GIỎ HÀNG & TÍNH TIỀN --- */
+        .cart-section {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+            border-top: 5px solid var(--purple-main);
+        }
+
+        .cart-section h2 {
+            color: var(--purple-dark);
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .cart-items {
+            max-height: 240px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .cart-item-details {
+            max-width: 60%;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+        }
+
+        .cart-item-qty {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .btn-remove {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--purple-dark);
+            padding: 15px 0;
+            border-top: 2px dashed var(--pink-main);
+            margin-bottom: 20px;
+        }
+
+        /* Form thanh toán */
+        .order-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .order-form input:focus {
+            border-color: var(--purple-main);
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background-color: var(--pink-main);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--purple-dark);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--purple-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THANH MENU -->
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo">Violet<span>Pink</span></a>
+            <ul class="nav-links">
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Thực đơn</a></li>
+                <li><a href="#">Khuyến mãi</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- BANNER CHÀO MỪNG -->
+    <section class="hero">
+        <h1>Chào Mừng Đến Với Tiệm Ăn Lịch Sự</h1>
+        <p>Thưởng thức những món ăn tinh tế trong không gian ấm áp</p>
+    </section>
+
+    <!-- BỐ CỤC CHÍNH -->
+    <div class="container">
+        
+        <!-- DANH SÁCH MÓN ĂN -->
+        <main class="menu-section">
+            <h2>Thực Đơn Hôm Nay</h2>
+            <div class="food-grid">
+                
+                <!-- Món 1 -->
+                <div class="food-card">
+                    <div class="food-img">🍰</div>
+                    <div class="food-info">
+                        <h3 class="food-title">Bánh Kem Dâu Tây</h3>
+                        <p class="food-price">45.000 đ</p>
+                        <button class="btn-add" onclick="addToCart('Bánh Kem Dâu Tây', 45000)">Thêm vào giỏ</button>
+                    </div>
+                </div>
+
+                <!-- Món 2 -->
+                <div class="food-card">
+                    <div class="food-img">🍝</div>
+                    <div class="food-info">
+                        <h3 class="food-title">Mỳ Ý Sốt Kem Hồng</h3>
+                        <p class="food-price">65.000 đ</p>
+                        <button class="btn-add" onclick="addToCart('Mỳ Ý Sốt Kem Hồng', 65000)">Thêm vào giỏ</button>
+                    </div>
+                </div>
+
+                <!-- Món 3 -->
+                <div class="food-card">
+                    <div class="food-img">🥤</div>
+                    <div class="food-info">
+                        <h3 class="food-title">Trà Sữa Khoai Môn</h3>
+                        <p class="food-price">35.000 đ</p>
+                        <button class="btn-add" onclick="addToCart('Trà Sữa Khoai Môn', 35000)">Thêm vào giỏ</button>
+                    </div>
+                </div>
+
+                <!-- Món 4 -->
+                <div class="food-card">
+                    <div class="food-img">🍇</div>
+                    <div class="food-info">
+                        <h3 class="food-title">Panna Cotta Việt Quất</h3>
+                        <p class="food-price">40.000 đ</p>
+                        <button class="btn-add" onclick="addToCart('Panna Cotta Việt Quất', 40000)">Thêm vào giỏ</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- GIỎ HÀNG & TÍNH TIỀN -->
+        <aside class="cart-section">
+            <h2>Giỏ Hàng Của Bạn</h2>
+            
+            <div class="cart-items" id="cartItems">
+                <!-- Món ăn được thêm sẽ xuất hiện ở đây -->
+                <p style="color: #888; text-align: center; padding: 20px 0;">Chưa có món nào được chọn</p>
+            </div>
+
+            <div class="cart-total">
+                <span>Tổng cộng:</span>
+                <span id="cartTotal">0 đ</span>
+            </div>
+
+            <!-- Form điền thông tin đặt hàng -->
+            <form class="order-form" onsubmit="checkout(event)">
+                <input type="text" id="cusName" placeholder="Họ và tên của bạn" required>
+                <input type="tel" id="cusPhone" placeholder="Số điện thoại nhận hàng" required>
+                <input type="text" id="cusAddress" placeholder="Địa chỉ giao hàng" required>
+                <button type="submit" class="btn-checkout">Xác Nhận & Thanh Toán</button>
+            </form>
+        </aside>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Tiệm Ăn Lịch Sự VioletPink. Cảm ơn quý khách!</p>
+    </footer>
+
+    <!-- XỬ LÝ LOGIC TÍNH TIỀN (JAVASCRIPT) -->
+    <script>
+        // Mảng lưu trữ các món trong giỏ hàng
+        let cart = [];
+
+        // Hàm thêm món ăn vào giỏ
+        function addToCart(name, price) {
+            // Kiểm tra xem món đó đã có trong giỏ chưa
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, quantity: 1 });
+            }
+            
+            updateCartUI();
+        }
+
+        // Hàm xóa món khỏi giỏ
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        // Cập nhật giao diện và tính tổng tiền
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalContainer = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px 0;">Chưa có món nào được chọn</p>';
+                cartTotalContainer.innerText = '0 đ';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-qty">Số lượng: ${item.quantity}</div>
+                        </div>
+                        <div style="font-weight: 500;">${itemTotal.toLocaleString('vi-VN')} đ</div>
+                        <button class="btn-remove" onclick="removeFromCart('${item.name}')">Xóa</button>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+            cartTotalContainer.innerText = total.toLocaleString('vi-VN') + ' đ';
+        }
+
+        // Xử lý khi nhấn nút Thanh toán
+        function checkout(event) {
+            event.preventDefault(); // Ngăn trang web tải lại
+            
+            if (cart.length === 0) {
+                alert('Giỏ hàng của bạn đang trống. Vui lòng chọn món trước nhé!');
+                return;
+            }
+
+            const name = document.getElementById('cusName').value;
+            const totalMoney = document.getElementById('cartTotal').innerText;
+
+            alert(`Cảm ơn bạn ${name} đã đặt hàng!\nĐơn hàng với tổng số tiền ${totalMoney} đã được ghi nhận thành công và đang được chuẩn bị.`);
+            
+            // Xóa sạch giỏ hàng sau khi đặt thành công
+            cart = [];
+            document.querySelector('.order-form').reset();
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
+
